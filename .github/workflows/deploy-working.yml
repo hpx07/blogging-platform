@@ -1,4 +1,4 @@
-name: Deploy Blog-X (Simple)
+name: Deploy Blog-X (Working)
 
 on:
   push:
@@ -9,9 +9,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     
-    permissions:
-      contents: write
-    
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -21,17 +18,27 @@ jobs:
       with:
         node-version: '20'
 
-    - name: Install dependencies
+    - name: Clean and Install
       run: |
         cd frontend
-        npm install --no-package-lock
+        # Remove any lock files to avoid conflicts
+        rm -f package-lock.json yarn.lock
+        # Install all dependencies fresh
+        npm install
+        # Verify gh-pages is installed
+        npm list gh-pages || npm install --save-dev gh-pages@6.1.0
 
     - name: Build
       run: |
         cd frontend
-        npm run build
-      env:
-        NODE_ENV: production
+        NODE_ENV=production npm run build
+
+    - name: List build output
+      run: |
+        cd frontend
+        ls -la out/
+        echo "Index.html size:"
+        wc -c out/index.html
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3

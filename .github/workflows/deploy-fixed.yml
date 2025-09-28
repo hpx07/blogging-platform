@@ -1,4 +1,4 @@
-name: Deploy Blog-X (Simple)
+name: Deploy Blog-X (Fixed)
 
 on:
   push:
@@ -24,7 +24,12 @@ jobs:
     - name: Install dependencies
       run: |
         cd frontend
-        npm install --no-package-lock
+        # Remove any existing lock files to avoid conflicts
+        rm -f package-lock.json
+        # Install dependencies
+        npm install
+        # Install gh-pages specifically
+        npm install --save-dev gh-pages@6.1.0
 
     - name: Build
       run: |
@@ -34,8 +39,10 @@ jobs:
         NODE_ENV: production
 
     - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./frontend/out
-        force_orphan: true
+      run: |
+        cd frontend
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        npm run deploy
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

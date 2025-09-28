@@ -48,12 +48,13 @@ Write-Host "Build successful!" -ForegroundColor Green
 
 Write-Host "Step 2: Deploying to GitHub Pages..." -ForegroundColor Cyan
 
-# Install gh-pages if not already installed
-npm list gh-pages > $null 2>&1
-if ($LASTEXITCODE -ne 0) {
-    Write-Host "Installing gh-pages..." -ForegroundColor Cyan
-    npm install --save-dev gh-pages
-}
+# Clean up lock files and install fresh
+Write-Host "Cleaning lock files..." -ForegroundColor Cyan
+if (Test-Path "package-lock.json") { Remove-Item "package-lock.json" }
+
+# Install gh-pages
+Write-Host "Installing gh-pages..." -ForegroundColor Cyan
+npm install --save-dev gh-pages@6.1.0
 
 # Deploy
 npm run deploy
