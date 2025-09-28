@@ -111,7 +111,7 @@ npm run dev
 - **Database**: CockroachDB Cloud (configured)
 
 ### **GitHub Pages Deployment**
-- **Live Demo**: https://yourusername.github.io/blog-x
+- **Live Demo**: https://hpx07.github.io/blogging-platform
 - **Setup Guide**: See [GITHUB_PAGES_SETUP.md](GITHUB_PAGES_SETUP.md)
 - **Deploy Script**: `.\deploy-to-github.ps1`
 

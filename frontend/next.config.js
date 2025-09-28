@@ -10,8 +10,9 @@ const nextConfig = {
   env: {
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'https://your-backend-api.com/api',
   },
-  basePath: process.env.NODE_ENV === 'production' ? '/blog-x' : '',
-  assetPrefix: process.env.NODE_ENV === 'production' ? '/blog-x/' : '',
+  // Remove basePath and assetPrefix for now to avoid routing issues
+  // basePath: process.env.NODE_ENV === 'production' ? '/blog-x' : '',
+  // assetPrefix: process.env.NODE_ENV === 'production' ? '/blog-x/' : '',
 }
 
 module.exports = nextConfig

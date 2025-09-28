@@ -9,7 +9,7 @@
     "lint": "next lint",
     "type-check": "tsc --noEmit",
     "clean": "rm -rf .next",
-    "export": "next build && next export",
+    "export": "next build",
     "deploy": "npm run export && gh-pages -d out"
   },
   "dependencies": {
