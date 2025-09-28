@@ -1,0 +1,52 @@
+name: Deploy Blog-X (CSS Fixed)
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Install dependencies
+      run: |
+        cd frontend
+        rm -f package-lock.json yarn.lock
+        npm install
+        npm install --save-dev gh-pages@6.1.0
+
+    - name: Build with CSS fix
+      run: |
+        cd frontend
+        # Set environment variables
+        export NODE_ENV=production
+        export NEXT_TELEMETRY_DISABLED=1
+        
+        # Build
+        npm run build
+        
+        # Verify CSS files exist
+        echo "=== Checking for CSS files ==="
+        find out/_next -name "*.css" -type f || echo "No CSS files found"
+        
+        # Check index.html for CSS links
+        echo "=== Checking index.html for CSS links ==="
+        grep -o '_next[^"]*\.css' out/index.html || echo "No CSS links found in index.html"
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./frontend/out
+        force_orphan: true
+        cname: false

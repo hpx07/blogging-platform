@@ -31,14 +31,21 @@ jobs:
     - name: Build
       run: |
         cd frontend
-        NODE_ENV=production npm run build
+        NODE_ENV=production NEXT_TELEMETRY_DISABLED=1 npm run build
 
     - name: List build output
       run: |
         cd frontend
+        echo "=== Build Output Structure ==="
         ls -la out/
-        echo "Index.html size:"
+        echo "=== CSS Files ==="
+        find out/_next -name "*.css" -type f 2>/dev/null || echo "No CSS files found"
+        echo "=== JS Files ==="
+        find out/_next -name "*.js" -type f | head -5 2>/dev/null || echo "No JS files found"
+        echo "=== Index.html size and preview ==="
         wc -c out/index.html
+        echo "First 500 chars of index.html:"
+        head -c 500 out/index.html
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
