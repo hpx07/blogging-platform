@@ -34,9 +34,28 @@ git push -u origin main
 2. Click **Settings** tab
 3. Scroll down to **Pages** section
 4. Under **Source**, select **GitHub Actions**
-5. Push any change to trigger the first deployment
-6. Wait for the action to complete (check Actions tab)
-7. Your site will be available at `https://hpx07.github.io/blogging-platform`
+5. The workflow will automatically run when you push to main
+
+### **Step 4: Troubleshoot if Needed**
+
+If the GitHub Actions fail with deprecated version errors:
+
+**Option A: Use Simple Workflow**
+1. Delete `.github/workflows/deploy.yml`
+2. Rename `.github/workflows/deploy-simple.yml` to `deploy.yml`
+3. Push changes
+
+**Option B: Manual Deployment**
+```powershell
+.\deploy-manual.ps1
+```
+
+**Option C: Check Issues**
+```powershell
+.\troubleshoot-deployment.ps1
+```
+
+Your site will be available at `https://yourusername.github.io`
 
 ### **Step 4: Update Configuration**
 
